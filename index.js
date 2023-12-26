@@ -2,8 +2,7 @@ let globalId = 1;
 let todoState = [];
 let oldTodoState = [];
 
-
-function createTodo(title, description, id){
+function createTodo(title, description, id) {
   const parent = document.getElementById("todo-list");
   const child = document.createElement("div");
   child.classList.add("todo-item");
@@ -33,12 +32,12 @@ function updateTodo(oldTodo, newTodo) {
   if (newTodo.complete) {
     element.children[0].innerHTML = newTodo.title;
     element.children[1].innerHTML = newTodo.description;
-    element.children[0].innerHTML = newTodo.complete?"Mark as done" : "Done";
+    element.children[0].innerHTML = newTodo.complete ? "Mark as done" : "Done";
   }
-  }
+}
 // return true if was updated else false
-function updateState(newTodos){
-// calculate the diff b/w newTodos and oldTodos.
+function updateState(newTodos) {
+  // calculate the diff b/w newTodos and oldTodos.
   // More specifically, find out what todos are -
   // 1. added
   // 2. deleted
@@ -46,11 +45,33 @@ function updateState(newTodos){
   const added = [];
   const deleted = [];
   const updated = [];
+  newTodos.forEach((newTodo) => {
+    const oldTodo = oldTodoState.find((t) => t.id === newTodo.id);
+
+    if (!oldTodo) {
+      added.push(newTodo);
+    } else if (newTodo.complete !== oldTodo.complete) {
+      updated.push({ oldTodo, newTodo });
+    }
+  });
+
+  oldTodoState.forEach((oldTodo) => {
+    const isDeleted = !newTodos.some((t) => t.id === oldTodo.id);
+
+    if (isDeleted) {
+      deleted.push(oldTodo);
+    }
+  });
+
+  // Process added, deleted, and updated todos
+  added.forEach((todo) => createTodo(todo));
+  deleted.forEach((todo) => removeTodo(todo.id));
+  updated.forEach(({ oldTodo, newTodo }) => updateTodo(oldTodo, newTodo));
+
+  oldTodoState = newTodos.slice(); // Update oldTodoState with the new state
   // calculate these 3 arrays
   // call addTodo, removeTodo, updateTodo functions on each of the
   // elements
-
-  oldTodoState = newTodos;
 }
 
 function addTodo() {
