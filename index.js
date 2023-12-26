@@ -64,7 +64,7 @@ function updateState(newTodos) {
   });
 
   // Process added, deleted, and updated todos
-  added.forEach((todo) => createTodo(todo));
+  added.forEach((todo) => createTodo(todo.title, todo.description, todo.id));
   deleted.forEach((todo) => removeTodo(todo.id));
   updated.forEach(({ oldTodo, newTodo }) => updateTodo(oldTodo, newTodo));
 
@@ -78,8 +78,8 @@ function addTodo() {
   const title = document.getElementById("title");
   const description = document.getElementById("description");
   todoState.push({
-    title: title,
-    description: description,
+    title: title.value,
+    description: description.value,
     id: globalId++,
   });
   updateState(todoState);
