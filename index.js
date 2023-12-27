@@ -2,6 +2,8 @@ let globalId = 1;
 let todoState = [];
 let oldTodoState = [];
 
+//How React DOM Works under the hood by performing the changes
+//in state calculated by React
 function createTodo(title, description, id) {
   const parent = document.getElementById("todo-list");
   const child = document.createElement("div");
@@ -35,8 +37,11 @@ function updateTodo(oldTodo, newTodo) {
     element.children[0].innerHTML = newTodo.complete ? "Mark as done" : "Done";
   }
 }
-// return true if was updated else false
+
 function updateState(newTodos) {
+  // How React works under the hood Compares the previous state with
+  // the new state and and only does rerenders accordingly
+  // Not just performing Entire rerender completely.
   // calculate the diff b/w newTodos and oldTodos.
   // More specifically, find out what todos are -
   // 1. added
